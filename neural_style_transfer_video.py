@@ -9,6 +9,7 @@ import argparse
 import imutils
 import time
 import cv2
+import numpy as np
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -42,8 +43,11 @@ print("[INFO] {}. {}".format(modelID + 1, modelPath))
 
 # loop over frames from the video file stream
 while True:
+	start=time.time()
 	# grab the frame from the threaded video stream
 	frame = vs.read()
+	if frame is None:
+		frame=np.random.randint(0,255,(480,640,3),dtype=np.uint8)
 
 	# resize the frame to have a width of 600 pixels (while
 	# maintaining the aspect ratio), and then grab the image
@@ -74,6 +78,8 @@ while True:
 	cv2.imshow("Output", output)
 	key = cv2.waitKey(1) & 0xFF
 
+	end=time.time()
+	print(f'{1/(end-start):.4f} fps')
 	# if the `n` key is pressed (for "next"), load the next neural
 	# style transfer model
 	if key == ord("n"):
