@@ -46,13 +46,14 @@ while True:
 	start=time.time()
 	# grab the frame from the threaded video stream
 	frame = vs.read()
+
 	if frame is None:
 		frame=np.random.randint(0,255,(480,640,3),dtype=np.uint8)
-
+	frame=cv2.flip(frame, 1)
 	# resize the frame to have a width of 600 pixels (while
 	# maintaining the aspect ratio), and then grab the image
 	# dimensions
-	frame = imutils.resize(frame, width=600)
+	frame = imutils.resize(frame, width=400)
 	orig = frame.copy()
 	(h, w) = frame.shape[:2]
 
