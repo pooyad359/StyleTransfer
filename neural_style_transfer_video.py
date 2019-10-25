@@ -53,7 +53,7 @@ while True:
 	# resize the frame to have a width of 600 pixels (while
 	# maintaining the aspect ratio), and then grab the image
 	# dimensions
-	frame = imutils.resize(frame, width=400)
+	frame = imutils.resize(frame, width=320)
 	orig = frame.copy()
 	(h, w) = frame.shape[:2]
 
@@ -72,7 +72,7 @@ while True:
 	output[2] += 123.680
 	output /= 255.0
 	output = output.transpose(1, 2, 0)
-
+	output=cv2.resize(output,(640,480))
 	# show the original frame along with the output neural style
 	# transfer
 	cv2.imshow("Input", frame)
