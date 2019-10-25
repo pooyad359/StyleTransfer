@@ -15,13 +15,14 @@ import numpy as np
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--models", required=True,
 	help="path to directory containing neural style transfer models")
+ap.add_argument("-w","--width",default=320,help="image width")
 args = vars(ap.parse_args())
 
 # grab the paths to all neural style transfer models in our 'models'
 # directory, provided all models end with the '.t7' file extension
 modelPaths = paths.list_files(args["models"], validExts=(".t7",))
 modelPaths = sorted(list(modelPaths))
-
+width=np.int(args['width'])
 # generate unique IDs for each of the model paths, then combine the
 # two lists together
 models = list(zip(range(0, len(modelPaths)), (modelPaths)))
@@ -53,7 +54,7 @@ while True:
 	# resize the frame to have a width of 600 pixels (while
 	# maintaining the aspect ratio), and then grab the image
 	# dimensions
-	frame = imutils.resize(frame, width=320)
+	frame = imutils.resize(frame, width=width)
 	orig = frame.copy()
 	(h, w) = frame.shape[:2]
 
