@@ -42,16 +42,19 @@ net = cv2.dnn.readNetFromTorch(modelPath)
 print("[INFO] starting video stream...")
 # vs = VideoStream(src=0).start()
 camera=PiCamera()
-raw=PiRGBArray(camera)
-time.sleep(1.0)
+camera.resolution=(320,240)
+camera.framerate=32
+raw=PiRGBArray(camera,size=(320,240))
+time.sleep(0.10)
 print("[INFO] {}. {}".format(modelID + 1, modelPath))
 
 # loop over frames from the video file stream
-while True:
+#while True:
+for raw_frame in camera.capture_continuous(raw,format='rgb',use_video_port=True):
 	start=time.time()
 	# grab the frame from the threaded video stream
-	frame = camera.capture(raw,format='bgr').array
-
+	#camera.capture(raw,format='bgr')
+	frame = raw_frame.array
 	if frame is None:
 		frame=np.random.randint(0,255,(240,320,3),dtype=np.uint8)
 	frame=cv2.flip(frame, 1)
@@ -75,15 +78,17 @@ while True:
 	output[0] += 103.939
 	output[1] += 116.779
 	output[2] += 123.680
-	output /= 255.0
+	#output /= 255.0
+	output=np.clip(output,0,255)
 	output = output.transpose(1, 2, 0)
 	output=cv2.resize(output,(640,480))
+	output=output.astype(np.uint8)
 	# show the original frame along with the output neural style
 	# transfer
 	cv2.imshow("Input", frame)
 	cv2.imshow("Output", output)
 	key = cv2.waitKey(1) & 0xFF
-
+	raw.truncate(0)
 	end=time.time()
 	print("{} fps".format(1/(end-start)))
 	# if the `n` key is pressed (for "next"), load the next neural
