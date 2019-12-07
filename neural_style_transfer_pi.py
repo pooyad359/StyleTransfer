@@ -85,7 +85,7 @@ while True:
 	key = cv2.waitKey(1) & 0xFF
 
 	end=time.time()
-	print(f'{1/(end-start):.4f} fps')
+	print("{} fps".format(1/(end-start)))
 	# if the `n` key is pressed (for "next"), load the next neural
 	# style transfer model
 	if key == ord("n"):
